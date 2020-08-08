@@ -257,13 +257,13 @@ export default class GameController {
     for (const item of userPositions) {
       const current = item.character;
       current.level += 1;
-      current.attack = this.upAttackDefence(current.attack, current.health);
-      current.defence = this.upAttackDefence(current.defence, current.health);
+      current.attack = this.levelUplForAttackAndDefence(current.attack, current.health);
+      current.defence = this.levelUplForAttackAndDefence(current.defence, current.health);
       current.health = (current.health + 80) < 100 ? current.health + 80 : 100;
     }
   }
 
-  upAttackDefence(attackBefore, life) {
+  levelUplForAttackAndDefence(attackBefore, life) {
     return Math.floor(Math.max(attackBefore, attackBefore * (1.8 - life / 100)));
   }
 
@@ -331,13 +331,13 @@ export default class GameController {
   }
 
   async characterAttacker(attacker, target) {
-    const tCharacter = target.character;
-    let damage = Math.max(attacker.attack - tCharacter.defence, attacker.attack * 0.1);
+    const targetCharacter = target.character;
+    let damage = Math.max(attacker.attack - targetCharacter.defence, attacker.attack * 0.1);
     damage = Math.floor(damage);
     await this.gamePlay.showDamage(target.position, damage);
-    tCharacter.health -= damage;
+    targetCharacter.health -= damage;
     this.currentMove = this.currentMove === 'enemy' ? 'user' : 'enemy';
-    if (tCharacter.health <= 0) {
+    if (targetCharacter.health <= 0) {
       userPositions = userPositions.filter((item) => item.position !== target.position);
       enemyPositions = enemyPositions.filter((item) => item.position !== target.position);
       if (userPositions.length === 0) {
