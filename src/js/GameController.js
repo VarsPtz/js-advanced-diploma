@@ -130,7 +130,7 @@ export default class GameController {
         this.selected
         && this.gamePlay.boardEl.style.cursor === 'crosshair'
       ) {
-        // атака
+        // attack
         const thisAttackEnemy = [...enemyPositions].find(
           (item) => item.position === index,
         );
@@ -416,7 +416,7 @@ export default class GameController {
         };
       }
     }
-    // по диагонали ход
+    // diagonal travel
     if (Math.abs(nearUser.steprow) === Math.abs(nearUser.stepcolumn)) {
       if (Math.abs(nearUser.steprow) > itemEnemyDistance) {
         tempPRow = (itemEnemyRow - (itemEnemyDistance * Math.sign(nearUser.steprow)));
@@ -430,7 +430,7 @@ export default class GameController {
         tempEnemy.position = this.rowColumnToIndex(tempPRow, tempPCOlumn);
       }
     } else if (nearUser.stepcolumn === 0) {
-      // по вертикали ход
+      // vertical travel
       if (Math.abs(nearUser.steprow) > itemEnemyDistance) {
         tempPRow = (itemEnemyRow - (itemEnemyDistance * Math.sign(nearUser.steprow)));
 
@@ -441,7 +441,7 @@ export default class GameController {
         tempEnemy.position = this.rowColumnToIndex(tempPRow, (itemEnemyColumn));
       }
     } else if (nearUser.steprow === 0) {
-      // по горизонтали ход
+      // horizontal travel
       if (Math.abs(nearUser.stepcolumn) > itemEnemyDistance) {
         tempPCOlumn = (itemEnemyColumn - (itemEnemyDistance * Math.sign(nearUser.stepcolumn)));
 

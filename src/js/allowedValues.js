@@ -33,7 +33,7 @@ export function allowedValues(position, distance, boardSize) {
 }
 
 export function allowedValuesAttack(position, distance, boardSize) {
-  // атака по прямой и диагонали
+  // straight and diagonal attack
   const allowValues = [];
   const itemRow = Math.floor(position / boardSize);
   const itemColumn = position % boardSize;
