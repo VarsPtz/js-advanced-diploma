@@ -3,7 +3,8 @@
 Thumbs.db*
 .DS_Store*
 HELP.md
-dist
+src
+coverage
 doc
 
 # Logs
