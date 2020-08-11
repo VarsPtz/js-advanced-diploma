@@ -11,8 +11,8 @@ import GameState from './GameState';
 let userPositions = [];
 let enemyPositions = [];
 let selectedCharacterIndex = 0;
-let allowDistance;
-let allowPosition;
+let allowedDistance;
+let allowedPosition;
 let boardSize;
 
 export default class GameController {
@@ -118,7 +118,7 @@ export default class GameController {
         this.selected
         && this.gamePlay.boardEl.style.cursor === 'pointer'
       ) {
-        // ход
+        // move
         this.selectedCharacter.position = index;
         this.gamePlay.deselectCell(selectedCharacterIndex);
         this.gamePlay.deselectCell(index);
@@ -167,27 +167,27 @@ export default class GameController {
       }
 
       if (this.selected) {
-        allowPosition = this.selectedCharacter.position;
-        allowDistance = this.selectedCharacter.character.distance;
+        allowedPosition = this.selectedCharacter.position;
+        allowedDistance = this.selectedCharacter.character.distance;
         boardSize = this.gamePlay.boardSize;
 
-        const allowPositions = allowedValues(
-          allowPosition,
-          allowDistance,
+        const allowedPositions = allowedValues(
+          allowedPosition,
+          allowedDistance,
           boardSize,
         );
-        allowDistance = this.selectedCharacter.character.distanceAttack;
+        allowedDistance = this.selectedCharacter.character.distanceAttack;
 
         const allowAttack = allowedValuesAttack(
-          allowPosition,
-          allowDistance,
+          allowedPosition,
+          allowedDistance,
           boardSize,
         );
 
         if (this.funcFindIndex(userPositions) !== -1) {
           this.gamePlay.setCursor(cursors.pointer);
         } else if (
-          allowPositions.includes(index)
+          allowedPositions.includes(index)
           && this.funcFindIndex([...userPositions, ...enemyPositions]) === -1
         ) {
           this.gamePlay.selectCell(index, 'green');
@@ -361,12 +361,12 @@ export default class GameController {
     if (this.currentMove === 'enemy') {
       // attack
       for (const itemEnemy of [...enemyPositions]) {
-        allowDistance = this.selectedCharacter.character.distanceAttack;
-        allowPosition = itemEnemy.position;
+        allowedDistance = this.selectedCharacter.character.distanceAttack;
+        allowedPosition = itemEnemy.position;
         boardSize = this.gamePlay.boardSize;
         const allowAttack = allowedValuesAttack(
-          allowPosition,
-          allowDistance,
+          allowedPosition,
+          allowedDistance,
           boardSize,
         );
         const target = this.enemyAttack(allowAttack);
@@ -390,8 +390,8 @@ export default class GameController {
   enemyMove(itemEnemy) {
     const tempEnemy = itemEnemy;
     const itemEnemyDistance = itemEnemy.character.distance;
-    let tempPRow;
-    let tempPCOlumn;
+    let tempRow;
+    let tempColumn;
     let stepRow;
     let stepColumn;
     let Steps;
@@ -419,53 +419,53 @@ export default class GameController {
     // diagonal travel
     if (Math.abs(nearUser.steprow) === Math.abs(nearUser.stepcolumn)) {
       if (Math.abs(nearUser.steprow) > itemEnemyDistance) {
-        tempPRow = (itemEnemyRow - (itemEnemyDistance * Math.sign(nearUser.steprow)));
-        tempPCOlumn = (itemEnemyColumn - (itemEnemyDistance * Math.sign(nearUser.stepcolumn)));
+        tempRow = (itemEnemyRow - (itemEnemyDistance * Math.sign(nearUser.steprow)));
+        tempColumn = (itemEnemyColumn - (itemEnemyDistance * Math.sign(nearUser.stepcolumn)));
 
-        tempEnemy.position = this.rowColumnToIndex(tempPRow, tempPCOlumn);
+        tempEnemy.position = this.rowColumnToIndex(tempRow, tempColumn);
       } else {
-        tempPRow = (itemEnemyRow - (nearUser.steprow - (1 * Math.sign(nearUser.steprow))));
-        tempPCOlumn = (itemEnemyColumn - (nearUser.stepcolumn - (1 * Math.sign(nearUser.steprow))));
+        tempRow = (itemEnemyRow - (nearUser.steprow - (1 * Math.sign(nearUser.steprow))));
+        tempColumn = (itemEnemyColumn - (nearUser.stepcolumn - (1 * Math.sign(nearUser.steprow))));
 
-        tempEnemy.position = this.rowColumnToIndex(tempPRow, tempPCOlumn);
+        tempEnemy.position = this.rowColumnToIndex(tempRow, tempColumn);
       }
     } else if (nearUser.stepcolumn === 0) {
       // vertical travel
       if (Math.abs(nearUser.steprow) > itemEnemyDistance) {
-        tempPRow = (itemEnemyRow - (itemEnemyDistance * Math.sign(nearUser.steprow)));
+        tempRow = (itemEnemyRow - (itemEnemyDistance * Math.sign(nearUser.steprow)));
 
-        tempEnemy.position = this.rowColumnToIndex(tempPRow, (itemEnemyColumn));
+        tempEnemy.position = this.rowColumnToIndex(tempRow, (itemEnemyColumn));
       } else {
-        tempPRow = (itemEnemyRow - (nearUser.steprow - (1 * Math.sign(nearUser.steprow))));
+        tempRow = (itemEnemyRow - (nearUser.steprow - (1 * Math.sign(nearUser.steprow))));
 
-        tempEnemy.position = this.rowColumnToIndex(tempPRow, (itemEnemyColumn));
+        tempEnemy.position = this.rowColumnToIndex(tempRow, (itemEnemyColumn));
       }
     } else if (nearUser.steprow === 0) {
       // horizontal travel
       if (Math.abs(nearUser.stepcolumn) > itemEnemyDistance) {
-        tempPCOlumn = (itemEnemyColumn - (itemEnemyDistance * Math.sign(nearUser.stepcolumn)));
+        tempColumn = (itemEnemyColumn - (itemEnemyDistance * Math.sign(nearUser.stepcolumn)));
 
-        tempEnemy.position = this.rowColumnToIndex((itemEnemyRow), tempPCOlumn);
+        tempEnemy.position = this.rowColumnToIndex((itemEnemyRow), tempColumn);
       } else {
         const tempFormul = (nearUser.stepcolumn - (1 * Math.sign(nearUser.stepcolumn)));
-        tempPCOlumn = (itemEnemyColumn - tempFormul);
+        tempColumn = (itemEnemyColumn - tempFormul);
 
-        tempEnemy.position = this.rowColumnToIndex((itemEnemyRow), tempPCOlumn);
+        tempEnemy.position = this.rowColumnToIndex((itemEnemyRow), tempColumn);
       }
     } else if (Math.abs(nearUser.steprow) > Math.abs(nearUser.stepcolumn)) {
       if (Math.abs(nearUser.steprow) > itemEnemyDistance) {
-        tempPRow = (itemEnemyRow - (itemEnemyDistance * Math.sign(nearUser.steprow)));
+        tempRow = (itemEnemyRow - (itemEnemyDistance * Math.sign(nearUser.steprow)));
 
-        tempEnemy.position = this.rowColumnToIndex(tempPRow, (itemEnemyColumn));
+        tempEnemy.position = this.rowColumnToIndex(tempRow, (itemEnemyColumn));
       } else {
-        tempPRow = (itemEnemyRow - (nearUser.steprow));
+        tempRow = (itemEnemyRow - (nearUser.steprow));
 
-        tempEnemy.position = this.rowColumnToIndex(tempPRow, (itemEnemyColumn));
+        tempEnemy.position = this.rowColumnToIndex(tempRow, (itemEnemyColumn));
       }
     } else if (Math.abs(nearUser.stepcolumn) > itemEnemyDistance) {
-      tempPCOlumn = (itemEnemyColumn - (itemEnemyDistance * Math.sign(nearUser.stepcolumn)));
+      tempColumn = (itemEnemyColumn - (itemEnemyDistance * Math.sign(nearUser.stepcolumn)));
 
-      tempEnemy.position = this.rowColumnToIndex((itemEnemyRow), tempPCOlumn);
+      tempEnemy.position = this.rowColumnToIndex((itemEnemyRow), tempColumn);
     } else {
       tempEnemy.position = this.rowColumnToIndex((itemEnemyRow), (itemEnemyColumn));
     }
