@@ -178,11 +178,13 @@ export default class GamePlay {
   }
 
   static showError(message) {
-    alert(message);
+    $('#modal-content-container').text(message);
+    $('#mySmallModalLabel').modal('show');
   }
 
   static showMessage(message) {
-    alert(message);
+    $('#modal-content-container').text(message);
+    $('#mySmallModalLabel').modal('show');
   }
 
   selectCell(index, color = 'yellow') {

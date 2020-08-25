@@ -60,6 +60,7 @@ export default class GameController {
       enemyPositions,
     };
     this.stateService.save(GameState.from(currentGameState));
+    GamePlay.showMessage('Game saved!');
   }
 
   loadGame() {
@@ -74,6 +75,7 @@ export default class GameController {
         this.gamePlay.drawUi(this.currentTheme);
         this.gamePlay.redrawPositions([...userPositions, ...enemyPositions]);
       }
+      GamePlay.showMessage('Game loaded!');
     } catch (e) {
       console.log(e);
       GamePlay.showMessage('Не удалось загрузить игру');
@@ -251,6 +253,7 @@ export default class GameController {
     this.point = 0;
     this.currentTheme = themes.prairie;
     this.nextLevel();
+    GamePlay.showMessage('Game started.');
   }
 
   levelUp() {
@@ -273,6 +276,7 @@ export default class GameController {
       this.userTeams = generateTeam(Team.userTeamLevel1, 1, 2);
       this.enemyTeams = generateTeam(Team.enemyTeam, 1, 2);
       this.addPositionCharacter(this.userTeams, this.enemyTeams);
+      GamePlay.showMessage('Start Level 1');
     } else if (this.level === 2) {
       this.currentTheme = themes.desert;
       this.userTeams = generateTeam(Team.userTeam, 1, 1);
@@ -282,6 +286,7 @@ export default class GameController {
         this.userTeams.length + userPositions.length,
       );
       this.addPositionCharacter(this.userTeams, this.enemyTeams);
+      GamePlay.showMessage('Start Level 2');
     } else if (this.level === 3) {
       this.currentTheme = themes.arctic;
       this.userTeams = generateTeam(Team.userTeam, 2, 2);
@@ -291,6 +296,7 @@ export default class GameController {
         this.userTeams.length + userPositions.length,
       );
       this.addPositionCharacter(this.userTeams, this.enemyTeams);
+      GamePlay.showMessage('Start Level 3');
     } else if (this.level === 4) {
       this.currentTheme = themes.mountain;
       this.userTeams = generateTeam(Team.userTeam, 3, 2);
@@ -300,6 +306,7 @@ export default class GameController {
         this.userTeams.length + userPositions.length,
       );
       this.addPositionCharacter(this.userTeams, this.enemyTeams);
+      GamePlay.showMessage('Start Level 4');
     } else {
       this.blockedBoard = true;
       GamePlay.showMessage(`Game over. Your scores ${this.point} .`);
