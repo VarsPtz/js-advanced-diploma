@@ -253,3 +253,9 @@ body {
   }
 }
 
+.modal-dialog {
+  padding-top: 350px;
+}
+.modal-content {
+  align-items: center;
+}
